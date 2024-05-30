@@ -1,0 +1,33 @@
+def ingresar_distancias(num_ciudades):
+    matriz = []
+    for i in range(num_ciudades):
+        distancia_ciudad = []
+        for j in range(num_ciudades):
+            distancia = int(input(f"Distancia de la ciudad {i+1} a la ciudad {j+1}: "))
+            distancia_ciudad.append(distancia)
+        matriz.append(distancia_ciudad)
+    return matriz
+
+def ordenar_ciudades_por_distancia(matriz):
+    distancias_totales = [(sum(distancias), indice) for indice, distancias in enumerate(matriz)]
+    distancias_totales.sort()
+    ciudades_ordenadas = [x[1] for x in distancias_totales]
+    return ciudades_ordenadas
+
+def distancia_entre_ciudades(matriz, ciudad_origen, ciudad_destino):
+    distancia = matriz[ciudad_origen][ciudad_destino]
+    return distancia
+
+def imprimir_matriz_y_ciudades_ordenadas(matriz, ciudades_ordenadas):
+    print("\nMatriz de distancias:")
+    for fila in matriz:
+        print(fila)
+    print("\nCiudades ordenadas por distancia total:")
+    for ciudad in ciudades_ordenadas:
+        print(f"Ciudad {ciudad+1}")
+
+num_ciudades = 3
+matriz_distancias = ingresar_distancias(num_ciudades)
+ciudades_ordenadas = ordenar_ciudades_por_distancia(matriz_distancias)
+imprimir_matriz_y_ciudades_ordenadas(matriz_distancias, ciudades_ordenadas)
+
