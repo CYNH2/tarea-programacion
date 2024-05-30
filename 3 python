@@ -1,0 +1,53 @@
+def inicializar_tablero():
+    return [[0 for _ in range(10)] for _ in range(10)]
+
+def colocar_ficha(tablero, fila, columna, tipo_ficha):
+    if 0 <= fila < 10 and 0 <= columna < 10 and tipo_ficha in (1, 2):
+        if tablero[fila][columna] == 0:
+            tablero[fila][columna] = tipo_ficha
+            return True
+        else:
+            print("La posición ya está ocupada.")
+    else:
+        print("Posición o tipo de ficha inválido.")
+    return False
+
+def imprimir_tablero(tablero):
+    for fila in tablero:
+        print(" ".join(map(str, fila)))
+
+def verificar_linea(tablero, tipo_ficha):
+    for fila in tablero:
+        for col in range(7):
+            if fila[col] == tipo_ficha and fila[col + 1] == tipo_ficha and fila[col + 2] == tipo_ficha and fila[col + 3] == tipo_ficha:
+                return True
+    for col in range(10):
+        for fila in range(7):
+            if tablero[fila][col] == tipo_ficha and tablero[fila + 1][col] == tipo_ficha and tablero[fila + 2][col] == tipo_ficha and tablero[fila + 3][col] == tipo_ficha:
+                return True
+    for fila in range(7):
+        for col in range(7):
+            if (tablero[fila][col] == tipo_ficha and tablero[fila + 1][col + 1] == tipo_ficha and
+                    tablero[fila + 2][col + 2] == tipo_ficha and tablero[fila + 3][col + 3] == tipo_ficha):
+                return True
+            if (tablero[fila + 3][col] == tipo_ficha and tablero[fila + 2][col + 1] == tipo_ficha and
+                    tablero[fila + 1][col + 2] == tipo_ficha and tablero[fila][col + 3] == tipo_ficha):
+                return True
+    return False
+
+def main():
+    tablero = inicializar_tablero()
+    colocar_ficha(tablero, 0, 0, 1)
+    colocar_ficha(tablero, 0, 1, 1)
+    colocar_ficha(tablero, 0, 2, 1)
+    colocar_ficha(tablero, 0, 3, 1)
+    imprimir_tablero(tablero)
+    if verificar_linea(tablero, 1):
+        print("Hay una línea de 4 fichas del tipo 1.")
+    else:
+        print("No hay ninguna línea de 4 fichas del tipo 1.")
+
+if __name__ == "__main__":
+    main()
+
+
