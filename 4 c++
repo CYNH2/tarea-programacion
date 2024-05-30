@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+void calcularPromedioDiario(const std::vector<std::vector<double>>& temperaturas, std::vector<double>& promedios) {
+    for (const auto& dia : temperaturas) {
+        double suma = 0;
+        for (double temp : dia) {
+            suma += temp;
+        }
+        promedios.push_back(suma / dia.size());
+    }
+}
+
+void ordenarTemperaturasDiarias(std::vector<std::vector<double>>& temperaturas) {
+    for (auto& dia : temperaturas) {
+        std::sort(dia.begin(), dia.end());
+    }
+}
+
+void encontrarDiaTemperaturaExtrema(const std::vector<std::vector<double>>& temperaturas, int& diaMax, int& diaMin) {
+    double maxTemp = temperaturas[0][0];
+    double minTemp = temperaturas[0][0];
+    for (int i = 0; i < temperaturas.size(); ++i) {
+        for (double temp : temperaturas[i]) {
+            if (temp > maxTemp) {
+                maxTemp = temp;
+                diaMax = i;
+            }
+            if (temp < minTemp) {
+                minTemp = temp;
+                diaMin = i;
+            }
+        }
+    }
+}
+
+int main() {
+    std::vector<std::vector<double>> temperaturas(30, std::vector<double>(4));
+    std::vector<double> promedios;
+
+    
+    for (int i = 0; i < 30; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            temperaturas[i][j] = 15 + rand() % 15;
+        }
+    }
+
+    calcularPromedioDiario(temperaturas, promedios);
+    ordenarTemperaturasDiarias(temperaturas);
+
+    int diaMax = 0, diaMin = 0;
+    encontrarDiaTemperaturaExtrema(temperaturas, diaMax, diaMin);
+
+    std::cout << "Promedios diarios:\n";
+    for (double prom : promedios) {
+        std::cout << prom << "\n";
+    }
+
+    std::cout << "Día con la temperatura más alta: " << diaMax + 1 << "\n";
+    std::cout << "Día con la temperatura más baja: " << diaMin + 1 << "\n";
+
+    return 0;
+}
