@@ -1,0 +1,42 @@
+import random
+
+def calcular_promedio_diario(temperaturas):
+    promedios = []
+    for dia in temperaturas:
+        promedios.append(sum(dia) / len(dia))
+    return promedios
+
+def ordenar_temperaturas_diarias(temperaturas):
+    for dia in temperaturas:
+        dia.sort()
+
+def encontrar_dia_temperatura_extrema(temperaturas):
+    dia_max = dia_min = 0
+    max_temp = min_temp = temperaturas[0][0]
+    for i, dia in enumerate(temperaturas):
+        for temp in dia:
+            if temp > max_temp:
+                max_temp = temp
+                dia_max = i
+            if temp < min_temp:
+                min_temp = temp
+                dia_min = i
+    return dia_max, dia_min
+
+def main():
+    temperaturas = [[15 + random.randint(0, 14) for _ in range(4)] for _ in range(30)]
+
+    promedios = calcular_promedio_diario(temperaturas)
+    ordenar_temperaturas_diarias(temperaturas)
+    dia_max, dia_min = encontrar_dia_temperatura_extrema(temperaturas)
+
+    print("Promedios diarios:")
+    for prom in promedios:
+        print(prom)
+
+    print(f"Día con la temperatura más alta: {dia_max + 1}")
+    print(f"Día con la temperatura más baja: {dia_min + 1}")
+
+if __name__ == "__main__":
+    main()
+
