@@ -1,0 +1,81 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <random>
+
+using namespace std;
+
+vector<vector<int>> inicializarNotas(int numEstudiantes, int numMaterias) {
+    vector<vector<int>> notas(numEstudiantes, vector<int>(numMaterias, 0));
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(0, 100);
+    for (int i = 0; i < numEstudiantes; ++i) {
+        for (int j = 0; j < numMaterias; ++j) {
+            notas[i][j] = dis(gen);
+        }
+    }
+    return notas;
+}
+
+vector<float> calcularPromedios(const vector<vector<int>>& notas) {
+    vector<float> promedios;
+    for (const auto& estudiante : notas) {
+        float promedio = accumulate(estudiante.begin(), estudiante.end(), 0.0) / estudiante.size();
+        promedios.push_back(promedio);
+    }
+    return promedios;
+}
+
+void ordenarNotas(vector<vector<int>>& notas) {
+    for (auto& estudiante : notas) {
+        sort(estudiante.rbegin(), estudiante.rend());
+    }
+}
+
+int buscarNotaExtrema(const vector<vector<int>>& notas, int materia, string extrema) {
+    if (extrema == "max") {
+        int maxNota = INT_MIN;
+        for (const auto& estudiante : notas) {
+            maxNota = max(maxNota, estudiante[materia]);
+        }
+        return maxNota;
+    } else if (extrema == "min") {
+        int minNota = INT_MAX;
+        for (const auto& estudiante : notas) {
+            minNota = min(minNota, estudiante[materia]);
+        }
+        return minNota;
+    }
+}
+
+void imprimirNotasPromediosExtremas(const vector<vector<int>>& notas, const vector<float>& promedios, int materia) {
+    cout << "Notas de los estudiantes:\n";
+    for (const auto& estudiante : notas) {
+        for (int nota : estudiante) {
+            cout << nota << " ";
+        }
+        cout << endl;
+    }
+    cout << "Promedios de notas de los estudiantes:\n";
+    for (float promedio : promedios) {
+        cout << promedio << " ";
+    }
+    cout << endl;
+    cout << "Nota más alta en la materia " << materia+1 << ": " << buscarNotaExtrema(notas, materia, "max") << endl;
+    cout << "Nota más baja en la materia " << materia+1 << ": " << buscarNotaExtrema(notas, materia, "min") << endl;
+}
+
+int main() {
+    int numEstudiantes = 5;
+    int numMaterias = 3;
+
+    vector<vector<int>> notas = inicializarNotas(numEstudiantes, numMaterias);
+    vector<float> promedios = calcularPromedios(notas);
+    ordenarNotas(notas);
+
+    int materiaEspecifica = 0;
+    imprimirNotasPromediosExtremas(notas, promedios, materiaEspecifica);
+
+    return 0;
+}
