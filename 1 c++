@@ -1,0 +1,73 @@
+c++
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+std::vector<double> calcularPromedios(const std::vector<std::vector<int>>& calificaciones) {
+    std::vector<double> promedios;
+    for (const auto& estudiante : calificaciones) {
+        double suma = 0;
+        for (int calificacion : estudiante) {
+            suma += calificacion;
+        }
+        promedios.push_back(suma / estudiante.size());
+    }
+    return promedios;
+}
+
+
+void ordenarCalificaciones(std::vector<std::vector<int>>& calificaciones) {
+    for (auto& estudiante : calificaciones) {
+        std::sort(estudiante.begin(), estudiante.end(), std::greater<int>());
+    }
+}
+
+
+int encontrarCalificacionMaxima(const std::vector<std::vector<int>>& calificaciones, int asignatura) {
+    int maxCalificacion = -1;
+    for (const auto& estudiante : calificaciones) {
+        if (asignatura < estudiante.size()) {
+            if (estudiante[asignatura] > maxCalificacion) {
+                maxCalificacion = estudiante[asignatura];
+            }
+        }
+    }
+    return maxCalificacion;
+}
+
+int main() {
+    std::vector<std::vector<int>> calificaciones = {
+        {85, 90, 78},
+        {88, 76, 92},
+        {70, 80, 85}
+    };
+
+    
+    std::vector<double> promedios = calcularPromedios(calificaciones);
+    std::cout << "Promedios de cada estudiante:\n";
+    for (size_t i = 0; i < promedios.size(); ++i) {
+        std::cout << "Estudiante " << i + 1 << ": " << promedios[i] << "\n";
+    }
+
+   
+    ordenarCalificaciones(calificaciones);
+
+   
+    std::cout << "\nCalificaciones ordenadas:\n";
+    for (size_t i = 0; i < calificaciones.size(); ++i) {
+        std::cout << "Estudiante " << i + 1 << ": ";
+        for (int calificacion : calificaciones[i]) {
+            std::cout << calificacion << " ";
+        }
+        std::cout << "\n";
+    }
+
+   
+    int asignatura;
+    std::cout << "\nIngrese el numero de la asignatura (0 a 2): ";
+    std::cin >> asignatura;
+    int calificacionMaxima = encontrarCalificacionMaxima(calificaciones, asignatura);
+    std::cout << "La calificacion mas alta en la asignatura " << asignatura << " es: " << calificacionMaxima << "\n";
+
+    return 0;
+}
