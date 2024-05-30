@@ -1,0 +1,86 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+
+struct Producto {
+    int codigo;
+    std::string nombre;
+    int cantidad;
+};
+
+void agregarProducto(std::vector<Producto>& inventario, int codigo, const std::string& nombre, int cantidad) {
+    inventario.push_back({codigo, nombre, cantidad});
+}
+
+void ordenarInventario(std::vector<Producto>& inventario) {
+    std::sort(inventario.begin(), inventario.end(), [](const Producto& a, const Producto& b) {
+        return a.nombre < b.nombre;
+    });
+}
+
+Producto* buscarProductoPorCodigo(std::vector<Producto>& inventario, int codigo) {
+    for (auto& producto : inventario) {
+        if (producto.codigo == codigo) {
+            return &producto;
+        }
+    }
+    return nullptr;
+}
+
+void venderProducto(std::vector<Producto>& inventario, int codigo, int cantidadVendida) {
+    Producto* producto = buscarProductoPorCodigo(inventario, codigo);
+    if (producto != nullptr) {
+        if (producto->cantidad >= cantidadVendida) {
+            producto->cantidad -= cantidadVendida;
+        } else {
+            std::cout << "Stock insuficiente para la venta.\n";
+        }
+    } else {
+        std::cout << "Producto no encontrado.\n";
+    }
+}
+
+void recibirNuevoStock(std::vector<Producto>& inventario, int codigo, int cantidadRecibida) {
+    Producto* producto = buscarProductoPorCodigo(inventario, codigo);
+    if (producto != nullptr) {
+        producto->cantidad += cantidadRecibida;
+    } else {
+        std::cout << "Producto no encontrado.\n";
+    }
+}
+
+int main() {
+    std::vector<Producto> inventario;
+
+   
+    agregarProducto(inventario, 101, "Manzanas", 50);
+    agregarProducto(inventario, 102, "Peras", 30);
+    agregarProducto(inventario, 103, "Platanos", 100);
+
+    ordenarInventario(inventario);
+    std::cout << "Inventario ordenado por nombre:\n";
+    for (const auto& producto : inventario) {
+        std::cout << "Codigo: " << producto.codigo << ", Nombre: " << producto.nombre << ", Cantidad: " << producto.cantidad << "\n";
+    }
+
+    int codigoBuscado = 102;
+    Producto* productoBuscado = buscarProductoPorCodigo(inventario, codigoBuscado);
+    if (productoBuscado != nullptr) {
+        std::cout << "Producto encontrado: " << productoBuscado->nombre << " con cantidad: " << productoBuscado->cantidad << "\n";
+    } else {
+        std::cout << "Producto no encontrado.\n";
+    }
+
+    venderProducto(inventario, 101, 20);
+
+    recibirNuevoStock(inventario, 103, 50);
+
+    std::cout << "\nInventario actualizado:\n";
+    for (const auto& producto : inventario) {
+        std::cout << "Codigo: " << producto.codigo << ", Nombre: " << producto.nombre << ", Cantidad: " << producto.cantidad << "\n";
+    }
+
+    return 0;
+}
+
