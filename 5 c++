@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+vector<vector<int>> ingresarDistancias(int numCiudades) {
+    vector<vector<int>> matriz(numCiudades, vector<int>(numCiudades, 0));
+    for (int i = 0; i < numCiudades; ++i) {
+        for (int j = 0; j < numCiudades; ++j) {
+            cout << "Distancia de la ciudad " << i+1 << " a la ciudad " << j+1 << ": ";
+            cin >> matriz[i][j];
+        }
+    }
+    return matriz;
+}
+
+vector<int> ordenarCiudadesPorDistancia(const vector<vector<int>>& matriz) {
+    vector<pair<int, int>> distanciasTotales;
+    for (int i = 0; i < matriz.size(); ++i) {
+        int distanciaTotal = 0;
+        for (int j = 0; j < matriz[i].size(); ++j) {
+            distanciaTotal += matriz[i][j];
+        }
+        distanciasTotales.push_back({distanciaTotal, i});
+    }
+    sort(distanciasTotales.begin(), distanciasTotales.end());
+    vector<int> ciudadesOrdenadas;
+    for (const auto& ciudad : distanciasTotales) {
+        ciudadesOrdenadas.push_back(ciudad.second);
+    }
+    return ciudadesOrdenadas;
+}
+
+int distanciaEntreCiudades(const vector<vector<int>>& matriz, int ciudadOrigen, int ciudadDestino) {
+    return matriz[ciudadOrigen][ciudadDestino];
+}
+
+void imprimirMatrizYCiudadesOrdenadas(const vector<vector<int>>& matriz, const vector<int>& ciudadesOrdenadas) {
+    cout << "\nMatriz de distancias:\n";
+    for (const auto& fila : matriz) {
+        for (int distancia : fila) {
+            cout << distancia << " ";
+        }
+        cout << endl;
+    }
+    cout << "\nCiudades ordenadas por distancia total:\n";
+    for (int ciudad : ciudadesOrdenadas) {
+        cout << "Ciudad " << ciudad+1 << endl;
+    }
+}
+
+int main() {
+    int numCiudades;
+    cout << "Ingrese el número de ciudades: ";
+    cin >> numCiudades;
+
+    vector<vector<int>> matrizDistancias = ingresarDistancias(numCiudades);
+    vector<int> ciudadesOrdenadas = ordenarCiudadesPorDistancia(matrizDistancias);
+    imprimirMatrizYCiudadesOrdenadas(matrizDistancias, ciudadesOrdenadas);
+
+    return 0;
+}
