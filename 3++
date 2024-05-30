@@ -1,0 +1,75 @@
+#include <iostream>
+#include <vector>
+
+void inicializarTablero(std::vector<std::vector<int>>& tablero) {
+    for (auto& fila : tablero) {
+        std::fill(fila.begin(), fila.end(), 0);
+    }
+}
+
+bool colocarFicha(std::vector<std::vector<int>>& tablero, int fila, int columna, int tipoFicha) {
+    if (fila >= 0 && fila < 10 && columna >= 0 && columna < 10 && (tipoFicha == 1 || tipoFicha == 2)) {
+        if (tablero[fila][columna] == 0) {
+            tablero[fila][columna] = tipoFicha;
+            return true;
+        } else {
+            std::cout << "La posición ya está ocupada.\n";
+        }
+    } else {
+        std::cout << "Posición o tipo de ficha inválido.\n";
+    }
+    return false;
+}
+
+void imprimirTablero(const std::vector<std::vector<int>>& tablero) {
+    for (const auto& fila : tablero) {
+        for (int celda : fila) {
+            std::cout << celda << " ";
+        }
+        std::cout << "\n";
+    }
+}
+
+bool verificarLinea(const std::vector<std::vector<int>>& tablero, int tipoFicha) {
+    for (const auto& fila : tablero) {
+        for (int col = 0; col <= 6; ++col) {
+            if (fila[col] == tipoFicha && fila[col + 1] == tipoFicha && fila[col + 2] == tipoFicha && fila[col + 3] == tipoFicha) {
+                return true;
+            }
+        }
+    }
+    for (int col = 0; col < 10; ++col) {
+        for (int fila = 0; fila <= 6; ++fila) {
+            if (tablero[fila][col] == tipoFicha && tablero[fila + 1][col] == tipoFicha && tablero[fila + 2][col] == tipoFicha && tablero[fila + 3][col] == tipoFicha) {
+                return true;
+            }
+        }
+    }
+    for (int fila = 0; fila <= 6; ++fila) {
+        for (int col = 0; col <= 6; ++col) {
+            if (tablero[fila][col] == tipoFicha && tablero[fila + 1][col + 1] == tipoFicha && tablero[fila + 2][col + 2] == tipoFicha && tablero[fila + 3][col + 3] == tipoFicha) {
+                return true;
+            }
+            if (tablero[fila + 3][col] == tipoFicha && tablero[fila + 2][col + 1] == tipoFicha && tablero[fila + 1][col + 2] == tipoFicha && tablero[fila][col + 3] == tipoFicha) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+int main() {
+    std::vector<std::vector<int>> tablero(10, std::vector<int>(10));
+    inicializarTablero(tablero);
+    colocarFicha(tablero, 0, 0, 1);
+    colocarFicha(tablero, 0, 1, 1);
+    colocarFicha(tablero, 0, 2, 1);
+    colocarFicha(tablero, 0, 3, 1);
+    imprimirTablero(tablero);
+    if (verificarLinea(tablero, 1)) {
+        std::cout << "Hay una línea de 4 fichas del tipo 1.\n";
+    } else {
+        std::cout << "No hay ninguna línea de 4 fichas del tipo 1.\n";
+    }
+    return 0;
+}
