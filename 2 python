@@ -1,0 +1,71 @@
+class Producto:
+    def __init__(self, codigo, nombre, cantidad):
+        self.codigo = codigo
+        self.nombre = nombre
+        self.cantidad = cantidad
+
+def agregar_producto(inventario, codigo, nombre, cantidad):
+    inventario.append(Producto(codigo, nombre, cantidad))
+
+def ordenar_inventario(inventario):
+    inventario.sort(key=lambda producto: producto.nombre)
+
+def buscar_producto_por_codigo(inventario, codigo):
+    for producto in inventario:
+        if producto.codigo == codigo:
+            return producto
+    return None
+
+def vender_producto(inventario, codigo, cantidad_vendida):
+    producto = buscar_producto_por_codigo(inventario, codigo)
+    if producto:
+        if producto.cantidad >= cantidad_vendida:
+            producto.cantidad -= cantidad_vendida
+        else:
+            print("Stock insuficiente para la venta.")
+    else:
+        print("Producto no encontrado.")
+
+def recibir_nuevo_stock(inventario, codigo, cantidad_recibida):
+    producto = buscar_producto_por_codigo(inventario, codigo)
+    if producto:
+        producto.cantidad += cantidad_recibida
+    else:
+        print("Producto no encontrado.")
+
+def main():
+    inventario = []
+
+    
+    agregar_producto(inventario, 101, "Manzanas", 50)
+    agregar_producto(inventario, 102, "Peras", 30)
+    agregar_producto(inventario, 103, "Platanos", 100)
+
+   
+    ordenar_inventario(inventario)
+    print("Inventario ordenado por nombre:")
+    for producto in inventario:
+        print(f"Codigo: {producto.codigo}, Nombre: {producto.nombre}, Cantidad: {producto.cantidad}")
+
+   
+    codigo_buscado = 102
+    producto_buscado = buscar_producto_por_codigo(inventario, codigo_buscado)
+    if producto_buscado:
+        print(f"Producto encontrado: {producto_buscado.nombre} con cantidad: {producto_buscado.cantidad}")
+    else:
+        print("Producto no encontrado.")
+
+  
+    vender_producto(inventario, 101, 20)
+
+    
+    recibir_nuevo_stock(inventario, 103, 50)
+
+   
+    print("\nInventario actualizado:")
+    for producto in inventario:
+        print(f"Codigo: {producto.codigo}, Nombre: {producto.nombre}, Cantidad: {producto.cantidad}")
+
+if __name__ == "__main__":
+    main()
+
