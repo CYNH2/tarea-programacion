@@ -1,0 +1,47 @@
+def calcular_promedios(calificaciones):
+    promedios = []
+    for estudiante in calificaciones:
+        promedio = sum(estudiante) / len(estudiante)
+        promedios.append(promedio)
+    return promedios
+
+def ordenar_calificaciones(calificaciones):
+    for estudiante in calificaciones:
+        estudiante.sort(reverse=True)
+
+def encontrar_calificacion_maxima(calificaciones, asignatura):
+    max_calificacion = -1
+    for estudiante in calificaciones:
+        if asignatura < len(estudiante):
+            if estudiante[asignatura] > max_calificacion:
+                max_calificacion = estudiante[asignatura]
+    return max_calificacion
+
+def main():
+    calificaciones = [
+        [85, 90, 78],
+        [88, 76, 92],
+        [70, 80, 85]
+    ]
+
+    
+    promedios = calcular_promedios(calificaciones)
+    print("Promedios de cada estudiante:")
+    for i, promedio in enumerate(promedios):
+        print(f"Estudiante {i + 1}: {promedio:.2f}")
+
+    
+    ordenar_calificaciones(calificaciones)
+
+   
+    print("\nCalificaciones ordenadas:")
+    for i, estudiante in enumerate(calificaciones):
+        print(f"Estudiante {i + 1}: {' '.join(map(str, estudiante))}")
+
+   
+    asignatura = int(input("\nIngrese el número de la asignatura (0 a 2): "))
+    calificacion_maxima = encontrar_calificacion_maxima(calificaciones, asignatura)
+    print(f"La calificación más alta en la asignatura {asignatura} es: {calificacion_maxima}")
+
+if __name__ == "__main__":
+    main()
